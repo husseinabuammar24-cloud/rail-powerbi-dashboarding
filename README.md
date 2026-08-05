@@ -3,3 +3,14 @@
 
 Methodology note — On-Time Rate %
 Canceled trains are excluded from both the numerator and denominator of On-Time Rate %. This measures punctuality among trains that actually ran, keeping it comparable to standard rail industry KPIs. Cancellations are tracked separately (see Platform Congestion / cancellation count, if you add one).
+
+
+
+
+3  recommendations:
+
+Spread Out Platform Usage: Platforms 4, 3, and 5 take the heaviest load—move some trains to less busy tracks during rush hour to stop station bottlenecks.
+
+Add Extra Buffer Time for IC Trains: Give InterCity (IC) trains a 2-minute cushion in their schedules so small delays don't cause a chain reaction across other lines.
+
+Focus Crew Support on Morning Rush Hours: Put extra dispatch and support staff on duty between 6 AM and 8 AM, when train volume peaks, to resolve delays instantly.
