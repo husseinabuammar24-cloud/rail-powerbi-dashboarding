@@ -1,10 +1,6 @@
 # RailPulse Analytics: Belgian Rail Performance & GTFS Network Dashboards
 
 - **Repository:** `rail-powerbi-dashboarding`
-- **Type of Challenge:** `Learning`
-- **Team Challenge:** `Solo`
-- **Author:** Hussein Abuammar
-- **Institution:** BeCode
 - **Year:** 2026
 - **Deployment Strategy:** Power BI Service (Azure SQL Integration)
 
