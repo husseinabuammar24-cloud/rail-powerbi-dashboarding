@@ -96,15 +96,15 @@ The mission brief asks the dashboard to answer four specific operational dilemma
 > Answered by the Train Class Performance chart (bottom left): Total Delayed Minutes by Train Class. **InterCity (IC) trains account for the majority of network delay minutes**, well ahead of S, L, P, EC, ECD, and EUR classes.
 
 **4. Platform Congestion Map — which tracks run the most behind schedule?**
-> Answered by the Platform Congestion visual (bottom middle): total volume by platform assignment. **Platforms 4, 3, and 5 handle disproportionately high volume** compared to higher-numbered platforms, making them the network's congestion hotspots.
+> Answered by the Avg Delay (min) by Station Name map (top right): bubble size reflects each station's average delay. **Brussels shows the largest bubble and highest average delay**, followed by Liège, with Antwerp mid-sized and Ghent showing the smallest bubble — the lowest average delay of the five polled stations.
 
-![Live Performance Dashboard — Rush Hour & Platform Breakdown](real-time%20dataset/screenshots/2.png)
+![Live Performance Dashboard — Avg Delay by Station Map](real-time%20dataset/screenshots/3.png)
 
 ### 💡 Top 3 Recommendations for SNCB/NMBS
 
 Based directly on the patterns visible in the dashboard screenshots above:
 
-1. **Spread Out Platform Usage.** The Platform Congestion Map shows Platforms 4, 3, and 5 absorbing the heaviest load. Rebalancing some scheduled services onto less-used tracks during rush hour would relieve this bottleneck and reduce knock-on delays at the busiest stations.
+1. **Prioritize Brussels for Delay Reduction.** The Avg Delay by Station map shows Brussels carrying the highest average delay of the five polled stations, with Liège close behind. Directing schedule review and dispatch resources to these two stations first would target the network's actual worst-performing hubs rather than spreading effort evenly.
 2. **Add Extra Buffer Time for IC Trains.** The Train Class Performance chart shows InterCity (IC) services are the single largest contributor to total delayed minutes. Building a small (~2-minute) schedule cushion into IC timetables would absorb minor delays before they cascade into other lines that share track segments.
 3. **Focus Crew and Dispatch Support on the 6–8 AM Window.** The Rush Hour Matrix shows train volume and average delay both peaking between 6–8 AM. Concentrating extra dispatch and platform staff during this specific window — rather than spreading resources evenly across the day — would target the network's actual bottleneck period directly.
 
