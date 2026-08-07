@@ -54,7 +54,7 @@ Text.Select(
     {"A".."Z"}
 )
 ```
-Detected train classes: `IC`, `S`, `L`, `P`, `EC`, `ECD`, `EUR`
+Detected train classes: `IC`, `S`, `L`, `EC`, `P`, `EUR`, `ICE`, `ECD`, `T`, `EXT`, `BUS`, `ES`, `NJ`
 
 ### DAX Calculated Table (Date Extraction)
 ```dax
@@ -66,6 +66,12 @@ CALENDAR(
 ```
 
 **Note:** `DateTable` is a standalone calculated table (not a column on `liveboard_records`) that generates one row per date spanning the earliest to latest `Scheduled Time` in the data, giving a clean `Date` column to drive date-based slicers and visuals.
+
+### DAX Calculated Column (Hour Extraction)
+```dax
+Hour = HOUR(liveboard_records[Scheduled Time])
+```
+**Note:** `Hour` pulls the hour component (0–23) out of `Scheduled Time` as a whole-number calculated column, used as the x-axis for the "Total trains and Avg Delay by Hour" chart and the Rush Hour Matrix.
 
 **Train Class — DAX equivalent (reference only):** The dashboard's actual Train Class column is built in Power Query (`Text.Select` step above). The same logic expressed as a DAX calculated column would look like this:
 ```dax
@@ -104,9 +110,15 @@ DIVIDE(
 Avg Delay (min) = AVERAGE(liveboard_records[delay_seconds]) / 60
 
 Total Delayed Minutes = SUM(liveboard_records[delay_seconds]) / 60
+
+Total Trains = COUNTROWS(liveboard_records)
+
+Target OnTime = 0.95
 ```
 
 **Methodology note:** A train is considered on time if its delay is under 120 seconds (2 minutes) and it was not canceled. Canceled trains are excluded from both the numerator and denominator of On-Time Rate %, keeping the metric comparable to standard rail industry KPIs. Cancellations are tracked separately via Cancellation Rate %.
+
+**Total Trains** powers the "Total Trains" KPI card. **Target OnTime** sets the 95% goal line shown on the On-Time Rate % KPI card (currently tracking +1.71% above target).
 
 ### ✅ Answering the Core Operational Questions
 
