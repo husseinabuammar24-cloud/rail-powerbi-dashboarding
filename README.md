@@ -56,6 +56,36 @@ Text.Select(
 ```
 Detected train classes: `IC`, `S`, `L`, `P`, `EC`, `ECD`, `EUR`
 
+### DAX Calculated Table (Date Extraction)
+```dax
+DateTable =
+CALENDAR(
+    MIN(liveboard_records[Scheduled Time]),
+    MAX(liveboard_records[Scheduled Time])
+)
+```
+
+**Note:** `DateTable` is a standalone calculated table (not a column on `liveboard_records`) that generates one row per date spanning the earliest to latest `Scheduled Time` in the data, giving a clean `Date` column to drive date-based slicers and visuals.
+
+**Train Class — DAX equivalent (reference only):** The dashboard's actual Train Class column is built in Power Query (`Text.Select` step above). The same logic expressed as a DAX calculated column would look like this:
+```dax
+Train Class (DAX) =
+VAR AfterDot =
+    MID(
+        vehicles[vehicle_name],
+        FIND(".", vehicles[vehicle_name]) + 1,
+        LEN(vehicles[vehicle_name])
+    )
+RETURN
+    CONCATENATEX(
+        GENERATESERIES(1, LEN(AfterDot)),
+        VAR ch = MID(AfterDot, [Value], 1)
+        RETURN IF(ch >= "A" && ch <= "Z", ch, ""),
+        ""
+    )
+```
+This is not the version actually used in the model — it's included here to show the equivalent logic in DAX for reference.
+
 ### DAX Measures
 ```dax
 On-Time Rate % =
