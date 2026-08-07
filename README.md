@@ -1,5 +1,7 @@
 # RailPulse Analytics: Belgian Rail Performance & GTFS Network Dashboards
 
+Acting as Lead Data Analyst for RailPulse, an urban mobility consulting firm, this project connects Power BI directly to a SNCB/NMBS train-records database and transforms raw timestamps and delay seconds into an executive-ready operational dashboard. It answers the four core operational dilemmas the stakeholder group needs solved: overall network punctuality, rush-hour bottlenecks, train-class delay performance, and platform-level congestion. The data model, DAX measures, and visual layout below were built to turn that raw pipeline into clear, presentable business recommendations for SNCB/NMBS leadership.
+
 - **Repository:** `rail-powerbi-dashboarding`
 - **Year:** 2026
 - **Deployment Strategy:** Power BI Service (Azure SQL Integration)
