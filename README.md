@@ -28,16 +28,12 @@ Both dashboards were developed entirely in **Power BI Service** (browser-based) 
 **Workbook:** `RailPulse Dataset Report.pbix`
 **Dashboard Link:** [RailPulse Performance Dashboard](https://app.powerbi.com/groups/0574653e-aeab-44e3-8b67-6e20c0a1ded5/reports/d09652e9-47c6-4ff5-93d9-992d6ad67b31/20507b7183086048142e?experience=power-bi)
 
-### Problem Statement
-Rail operators generate large volumes of live operational data every day. Raw database tables are difficult for managers and operational staff to interpret quickly. This dashboard transforms live railway operational data into an intuitive view of punctuality, delays, platform congestion, and train traffic throughout the day.
+![Live Performance Dashboard](real-time%20dataset/screenshots/1.png)
 
-### Data Architecture
-```
-iRail API (Live Liveboard Data) → Azure SQL Database → Power BI Service → Interactive Dashboard
-```
-A local SQLite dataset was used during early development but was not used in the final dashboard — Azure SQL Database is the single source of truth.
+### Connection Setup Used
+**Scenario A — Azure Cloud DB:** `Get Data → Azure → Azure SQL Database`, connecting directly to the Azure SQL Server holding the `liveboard_records`, `stations`, and `vehicles` tables. A local SQLite dataset (Scenario B) was used only during early Sprint 1 development and is not part of the final dashboard.
 
-> ⚠️ **Data Source Note:** This dashboard pulls live data from the **[iRail API](https://docs.irail.be/)**, a community-run public transport API for Belgium, rather than an official SNCB/NMBS data endpoint. Because iRail's liveboard data is queried per station, only a limited set of stations (Leuven, Brussel-Centraal, Antwerpen-Centraal, Gent-Sint-Pieters, Liège-Guillemins) were polled for this project, rather than the full national network.
+> ⚠️ **Data Source Note:** Live data is sourced from the **[iRail API](https://docs.irail.be/)**, a community-run public transport API for Belgium, rather than an official SNCB/NMBS endpoint. Because iRail's liveboard data is queried per station, only a limited set of stations (Leuven, Brussel-Centraal, Antwerpen-Centraal, Gent-Sint-Pieters, Liège-Guillemins) were polled for this project, rather than the full national network.
 
 ### Data Model (Star Schema)
 ```
@@ -82,18 +78,33 @@ Avg Delay (min) = AVERAGE(liveboard_records[delay_seconds]) / 60
 Total Delayed Minutes = SUM(liveboard_records[delay_seconds]) / 60
 ```
 
-**Methodology note:** A train is considered on time if its delay is under 120 seconds and it was not canceled. Canceled trains are excluded from both the numerator and denominator of On-Time Rate %, keeping the metric comparable to standard rail industry KPIs. Cancellations are tracked separately via Cancellation Rate %.
+**Methodology note:** A train is considered on time if its delay is under 120 seconds (2 minutes) and it was not canceled. Canceled trains are excluded from both the numerator and denominator of On-Time Rate %, keeping the metric comparable to standard rail industry KPIs. Cancellations are tracked separately via Cancellation Rate %.
 
-### Dashboard Layout
-1. **Punctuality & Operational KPIs (Top Banner):** On-Time Rate % (96.4%), Cancellation Rate % (0.0%), Average Delay (0.38 min), Total Delayed Minutes (1.75K), Total Trains (4.603K).
-2. **Train Class Performance (Bottom Left):** Total Delayed Minutes by Train Class — InterCity (IC) trains drive the majority of network delay minutes.
-3. **Platform Congestion Map (Bottom Middle):** Volume by platform — Platforms 4, 3, and 5 handle disproportionately high volume.
-4. **Rush Hour Matrix (Bottom Right):** Train Count vs. Avg Delay (min) by Hour — clear volume spikes during morning rush (6–8 AM).
+### ✅ Answering the Core Operational Questions
 
-### Top 3 Tactical Recommendations for SNCB/NMBS
-1. **Spread Out Platform Usage** — Platforms 4, 3, and 5 take the heaviest load; move some trains to less busy tracks during rush hour.
-2. **Add Extra Buffer Time for IC Trains** — A 2-minute schedule cushion prevents small delays from cascading across other lines.
-3. **Focus Crew Support on Morning Rush Hours** — Extra dispatch/support staff between 6–8 AM to resolve delays instantly.
+The mission brief asks the dashboard to answer four specific operational dilemmas. Here is how each one is addressed, and what the data shows:
+
+**1. Punctuality Scorecard — what is the network's overall On-Time Rate %?**
+> Answered by the `On-Time Rate %` KPI card (top banner). Current reading: **96.4%** on-time (delay < 2 minutes), against a **0.0%** Cancellation Rate, an **Average Delay of 0.38 min**, and **1.75K Total Delayed Minutes** across **4.603K Total Trains** recorded.
+
+**2. The Rush Hour Matrix — where exactly do bottlenecks occur across the day?**
+> Answered by the Rush Hour Matrix (bottom right): Train Count vs. Avg Delay (min) by Hour. The data shows a **clear volume spike between 6–8 AM**, where both train count and average delay rise together — the morning commute is the network's primary bottleneck window.
+
+**3. Train Class Breakdown — which train category drives the most delayed minutes?**
+> Answered by the Train Class Performance chart (bottom left): Total Delayed Minutes by Train Class. **InterCity (IC) trains account for the majority of network delay minutes**, well ahead of S, L, P, EC, ECD, and EUR classes.
+
+**4. Platform Congestion Map — which tracks run the most behind schedule?**
+> Answered by the Platform Congestion visual (bottom middle): total volume by platform assignment. **Platforms 4, 3, and 5 handle disproportionately high volume** compared to higher-numbered platforms, making them the network's congestion hotspots.
+
+![Live Performance Dashboard — Rush Hour & Platform Breakdown](real-time%20dataset/screenshots/2.png)
+
+### 💡 Top 3 Recommendations for SNCB/NMBS
+
+Based directly on the patterns visible in the dashboard screenshots above:
+
+1. **Spread Out Platform Usage.** The Platform Congestion Map shows Platforms 4, 3, and 5 absorbing the heaviest load. Rebalancing some scheduled services onto less-used tracks during rush hour would relieve this bottleneck and reduce knock-on delays at the busiest stations.
+2. **Add Extra Buffer Time for IC Trains.** The Train Class Performance chart shows InterCity (IC) services are the single largest contributor to total delayed minutes. Building a small (~2-minute) schedule cushion into IC timetables would absorb minor delays before they cascade into other lines that share track segments.
+3. **Focus Crew and Dispatch Support on the 6–8 AM Window.** The Rush Hour Matrix shows train volume and average delay both peaking between 6–8 AM. Concentrating extra dispatch and platform staff during this specific window — rather than spreading resources evenly across the day — would target the network's actual bottleneck period directly.
 
 ---
 
@@ -101,6 +112,8 @@ Total Delayed Minutes = SUM(liveboard_records[delay_seconds]) / 60
 
 **Workbook:** `RailPulse GTFS Report.pbix`
 **Dashboard Link:** [RailPulse GTFS Network Dashboard](https://app.powerbi.com/groups/0574653e-aeab-44e3-8b67-6e20c0a1ded5/reports/c0b0a2a0-dda2-4b09-8c59-23ceb6fde609/ea29ab5eb886913b78d0?experience=power-bi)
+
+![GTFS Network Dashboard](Static%20database/screenshots/1.png)
 
 ### Problem Statement
 Static GTFS feeds describe the full scheduled network — routes, trips, stops, and timetables — but raw GTFS tables are hard to explore directly. This dashboard turns the GTFS feed into an interactive view of network coverage, service frequency, accessibility, and station-level dwell time.
@@ -172,6 +185,8 @@ Avg Dwell Time Sec = AVERAGE(stop_times[dwell_seconds])
 5. **Trip Volume by Route Category** (Bar Chart) — `route_short_name` vs `[Total Trips]`.
 6. **Highest Traffic Transit Hubs** (Top 10 Table) — `stop_name` vs `[Total Trips]`.
 7. **Average Station Dwell Time** (Table) — `stop_name` vs `[Avg Dwell Time Sec]`, sorted descending.
+
+![GTFS Network Dashboard — Route & Station Detail](Static%20database/screenshots/2.png)
 
 ---
 
