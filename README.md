@@ -33,6 +33,8 @@ Both dashboards were developed entirely in **Power BI Service** (browser-based) 
 ### Connection Setup Used
 **Scenario A — Azure Cloud DB:** `Get Data → Azure → Azure SQL Database`, connecting directly to the Azure SQL Server holding the `liveboard_records`, `stations`, and `vehicles` tables. A local SQLite dataset (Scenario B) was used only during early Sprint 1 development and is not part of the final dashboard.
 
+Since the iRail API was used instead of an official SNCB endpoint, [Azure Portal](https://portal.azure.com/#home) was connected to Power BI Service to pull in the Azure SQL data collected from the 5 polled stations.
+
 > ⚠️ **Data Source Note:** Live data is sourced from the **[iRail API](https://docs.irail.be/)**, a community-run public transport API for Belgium, rather than an official SNCB/NMBS endpoint. Because iRail's liveboard data is queried per station, only a limited set of stations (Leuven, Brussel-Centraal, Antwerpen-Centraal, Gent-Sint-Pieters, Liège-Guillemins) were polled for this project, rather than the full national network.
 
 ### Data Model (Star Schema)
@@ -188,6 +190,14 @@ Avg Dwell Time Sec = AVERAGE(stop_times[dwell_seconds])
 
 ![GTFS Network Dashboard — Route & Station Detail](Static%20database/screenshots/2.png)
 
+### 💡 Top 3 Recommendations for SNCB/NMBS
+
+Based on the national network patterns visible in the GTFS dashboard:
+
+1. **Focus on the 9–15h window, not just rush hour.** Trips stay high (~18–20K) for most of the midday, so that's where extra buffering matters most — not just the morning peak.
+2. **Check the Aéroport Cdg TGV dwell time.** At 720 seconds vs. a 54s network average, it's a big outlier — worth confirming it's real and not a data error.
+3. **Prioritize IC routes for improvements.** They carry way more trips (~60K) than any other category, so upgrades there help the most riders.
+
 ---
 
 ## 🛠️ Challenges Encountered
@@ -199,14 +209,18 @@ Avg Dwell Time Sec = AVERAGE(stop_times[dwell_seconds])
 - GTFS time fields needed careful handling in Power Query (native `time` type vs. text parsing) to correctly compute `dwell_seconds`.
 - The classic Map visual is being retired in favor of Azure Maps, requiring an upgrade and re-configuration of the location/tooltip fields.
 
-## 🔭 Future Enhancements
+## 🛣️ Roadmap
 
-- **Scale up station coverage** — extend the live iRail polling to cover all Belgian stations (or explore an official SNCB/NMBS data source) instead of the current limited set, to make the real-time dashboard fully representative of the national network.
-- Scheduled cloud data refresh for the live dataset.
-- Drill-through navigation pages and custom tooltips.
-- Cross-hub comparison pages using interactive slicers.
-- Transfer/connection bottleneck analysis using `min_transfer_time`.
-- Historical trend comparisons and predictive delay forecasting using machine learning.
+| Phase | Item | Status |
+| :--- | :--- | :--- |
+| **Now** | Scheduled cloud data refresh for the live dataset | ⬜ Planned |
+| **Now** | Drill-through navigation pages and custom tooltips | ⬜ Planned |
+| **Next** | Scale up station coverage — extend live iRail polling to all Belgian stations (or explore an official SNCB/NMBS source) so the real-time dashboard reflects the full national network | ⬜ Planned |
+| **Next** | Cross-hub comparison pages using interactive slicers | ⬜ Planned |
+| **Later** | Transfer/connection bottleneck analysis using `min_transfer_time` | ⬜ Planned |
+| **Later** | Historical trend comparisons and predictive delay forecasting using machine learning | ⬜ Planned |
+
+*"Now" = short-term, achievable with current data setup · "Next" = requires broader data coverage · "Later" = larger scope, exploratory.*
 
 ---
 
@@ -235,3 +249,14 @@ rail-powerbi-dashboarding/
 
 - **Data Sources:** Live liveboard data via the [iRail API](https://docs.irail.be/) and the General Transit Feed Specification (GTFS) public data release for the Belgian Railway Network (NMBS/SNCB).
 - **Platform:** Built with Microsoft Power BI Service, Azure SQL Database, and Azure Maps visual integration.
+
+---
+
+## ⏱️ Project Timeline
+
+**5 days**
+
+## 👤 Author
+
+**Hussein Abuammar**
+🔗 [LinkedIn](https://www.linkedin.com/in/hussein-abuammar/)
